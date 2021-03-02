@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"sync"
 	"time"
+	"github.com/labstack/echo"
 )
 
 // Stream represents a single video feed.
@@ -53,6 +54,32 @@ func (s *Stream) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	delete(s.m, c)
 	s.lock.Unlock()
 	log.Println("Stream:", r.RemoteAddr, "disconnected")
+}
+
+// StreamToEcho implements Echo headers to respond to Echo HTTP requests with an MJPEG stream.
+func (s *Stream) StreamToEcho(c echo.Context) error {
+	log.Println("Stream:", c.Request().RemoteAddr, "connected")
+	c.Response().Header().Set("Content-Type", "multipart/x-mixed-replace;boundary="+boundaryWord)
+
+	ch := make(chan []byte)
+	s.lock.Lock()
+	s.m[ch] = true
+	s.lock.Unlock()
+
+	for {
+		time.Sleep(s.FrameInterval)
+		b := <-ch
+		_, err := c.Response().Write(b)
+		if err != nil {
+			break
+		}
+	}
+
+	s.lock.Lock()
+	delete(s.m, ch)
+	s.lock.Unlock()
+	log.Println("Stream:", c.Request().RemoteAddr, "disconnected")
+	return nil
 }
 
 // UpdateJPEG pushes a new JPEG frame onto the clients.
