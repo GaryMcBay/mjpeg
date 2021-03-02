@@ -1,4 +1,4 @@
-Forked from [HybridGroup](https://travis-ci.com/Teamwork/spaces-api)
+Forked from [HybridGroup](https://github.com/hybridgroup/mjpeg)
 
 # How to use
 - Initialise standard Echo server as [per](https://echo.labstack.com/cookbook/hello-world).
