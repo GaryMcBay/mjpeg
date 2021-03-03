@@ -4,7 +4,7 @@ Forked from [HybridGroup](https://github.com/hybridgroup/mjpeg)
 - Adds support for streaming an MJPEG http response to Echo web server.
 - Added new func `StreamToEcho`.
 - `StreamToEcho` implements echo.Context to set header to image/jpeg content-type.
-- Writes and streams MJPEG to echo.
+- Writes mjpeg buffer to an Echo-type response and streams to http.
 
 # How to use
 - Initialise standard Echo server as [per](https://echo.labstack.com/cookbook/hello-world).
