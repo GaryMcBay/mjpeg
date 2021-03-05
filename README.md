@@ -12,7 +12,7 @@ Forked from [HybridGroup](https://github.com/hybridgroup/mjpeg)
 - Pass new `StreamToEcho` func as the handler.
 
 # Code Example
-```
+```go
 package main
 
 import (
